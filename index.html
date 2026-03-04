@@ -7,841 +7,852 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/black.min.css">
 <style>
+  *, *::before, *::after { box-sizing: border-box; }
+
   :root {
     --green: #10b981;
-    --green-dim: rgba(16,185,129,0.15);
-    --green-dim2: rgba(16,185,129,0.08);
+    --green-glow: rgba(16,185,129,0.12);
     --navy: #020817;
-    --navy2: #070e22;
-    --navy3: #0d1b35;
-    --mid: #253b48;
-    --mid2: #1a2f3f;
-    --text: #f0f4f8;
-    --muted: #94a3b8;
-    --border: rgba(16,185,129,0.25);
+    --navy2: #07111f;
+    --mid: #0d1f30;
+    --text: #e8f0f7;
+    --muted: #7a94a8;
+    --border: rgba(16,185,129,0.2);
+    --red: #f87171;
+    --yellow: #fbbf24;
   }
 
   .reveal-viewport { background: var(--navy); }
-  .reveal .slides { font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; }
-  .reveal .slides section { text-align: left; padding: 0 60px; }
-  .reveal h1, .reveal h2, .reveal h3, .reveal h4 { font-family: "Helvetica Neue", -apple-system, sans-serif; font-weight: 700; letter-spacing: -0.02em; text-transform: none; color: #fff; }
-  .reveal h1 { font-size: 3em; line-height: 1.1; }
-  .reveal h2 { font-size: 1.9em; line-height: 1.15; margin-bottom: 0.5em; }
-  .reveal h3 { font-size: 1.2em; color: var(--green); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.8em; }
-  .reveal p, .reveal li { color: var(--text); font-size: 0.9em; line-height: 1.65; }
+
+  .reveal .slides {
+    font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  /* Reset section padding */
+  .reveal .slides section {
+    text-align: left;
+    padding: 42px 64px;
+    height: 100%;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Typography */
+  .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+    font-family: "Helvetica Neue", -apple-system, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    text-transform: none;
+    color: #fff;
+    margin: 0;
+    line-height: 1.15;
+  }
+  .reveal h1 { font-size: 2.6em; }
+  .reveal h2 { font-size: 1.85em; margin-bottom: 28px; }
+  .reveal h3 {
+    font-size: 0.65em;
+    color: var(--green);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 12px;
+  }
+  .reveal p { color: var(--text); font-size: 0.88em; line-height: 1.65; margin: 0; }
   .reveal ul { list-style: none; padding: 0; margin: 0; }
-  .reveal ul li { padding: 6px 0 6px 24px; position: relative; }
+  .reveal ul li {
+    color: var(--text);
+    font-size: 0.85em;
+    line-height: 1.6;
+    padding: 7px 0 7px 22px;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .reveal ul li:last-child { border-bottom: none; }
   .reveal ul li::before { content: "→"; color: var(--green); position: absolute; left: 0; font-weight: 700; }
   .reveal a { color: var(--green); }
 
-  /* GREEN TAG */
-  .tag { display: inline-block; background: var(--green-dim); color: var(--green); border: 1px solid var(--border); border-radius: 4px; padding: 3px 10px; font-size: 0.65em; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; vertical-align: middle; margin-left: 10px; }
+  /* LABELS */
+  .eyebrow {
+    color: var(--green);
+    font-size: 0.65em;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: block;
+  }
 
-  /* TITLE SLIDE */
-  .slide-title { background: radial-gradient(ellipse at 20% 50%, rgba(16,185,129,0.12) 0%, transparent 60%), var(--navy); }
-  .slide-title .eyebrow { color: var(--green); font-size: 0.75em; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; }
-  .slide-title h1 { font-size: 3.2em; }
+  /* ─── TITLE SLIDE ─── */
+  .slide-title {
+    background: radial-gradient(ellipse at 15% 60%, rgba(16,185,129,0.1) 0%, transparent 55%), var(--navy) !important;
+  }
+  .slide-title h1 { font-size: 3em; max-width: 700px; }
   .slide-title h1 span { color: var(--green); }
-  .slide-title .meta { color: var(--muted); font-size: 0.75em; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px; display: flex; gap: 40px; }
-  .slide-title .meta span { display: flex; align-items: center; gap: 8px; }
+  .slide-title .subtitle { color: var(--muted); font-size: 0.9em; max-width: 520px; margin-top: 16px; line-height: 1.6; }
+  .slide-title .meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    color: var(--muted);
+    font-size: 0.72em;
+  }
 
-  /* SECTION DIVIDER */
-  .slide-divider { background: linear-gradient(135deg, var(--navy2) 0%, var(--navy3) 100%); text-align: center !important; display: flex !important; flex-direction: column; justify-content: center; align-items: center; }
-  .slide-divider .section-num { font-size: 5em; font-weight: 900; color: rgba(16,185,129,0.08); line-height: 1; margin-bottom: -20px; }
+  /* ─── DIVIDER SLIDES ─── */
+  .slide-divider {
+    background: linear-gradient(135deg, var(--navy2) 0%, var(--mid) 100%) !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+  .slide-divider .section-no {
+    font-size: 7em;
+    font-weight: 900;
+    color: rgba(16,185,129,0.07);
+    line-height: 1;
+    margin-bottom: -16px;
+    display: block;
+  }
   .slide-divider h2 { font-size: 2.4em; text-align: center; }
-  .slide-divider p { color: var(--muted); text-align: center; max-width: 500px; }
+  .slide-divider p { color: var(--muted); text-align: center; max-width: 460px; margin-top: 12px; }
 
-  /* STAT CARDS */
-  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
-  .stat-card { background: var(--green-dim2); border: 1px solid var(--border); border-radius: 10px; padding: 24px 20px; text-align: center; }
-  .stat-card .num { font-size: 2.4em; font-weight: 900; color: var(--green); line-height: 1; margin-bottom: 8px; display: block; }
-  .stat-card .label { font-size: 0.7em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
-  .stat-card.red .num { color: #f87171; }
-  .stat-card.red { border-color: rgba(248,113,113,0.25); background: rgba(248,113,113,0.06); }
+  /* ─── STAT CARDS ─── */
+  .stat-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-top: 24px; }
+  .stat {
+    border-radius: 12px;
+    padding: 26px 20px;
+    text-align: center;
+  }
+  .stat.bad { background: rgba(248,113,113,0.07); border: 1px solid rgba(248,113,113,0.2); }
+  .stat.good { background: var(--green-glow); border: 1px solid var(--border); }
+  .stat .n { font-size: 2.6em; font-weight: 900; line-height: 1; margin-bottom: 8px; display: block; }
+  .stat.bad .n { color: var(--red); }
+  .stat.good .n { color: var(--green); }
+  .stat .l { font-size: 0.68em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
 
-  /* TWO COL */
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 20px; }
-  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 20px; }
+  /* ─── HIGHLIGHT BOX ─── */
+  .highlight {
+    background: var(--green-glow);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-top: 20px;
+  }
+  .highlight p { font-size: 0.82em; }
+  .highlight strong { color: var(--green); }
 
-  /* CARD */
-  .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 22px; }
-  .card.green { border-color: var(--border); background: var(--green-dim2); }
-  .card h4 { font-size: 0.85em; color: #fff; margin: 0 0 10px; font-weight: 700; }
-  .card p, .card li { font-size: 0.75em; color: var(--muted); margin: 0; }
-  .card li { padding: 3px 0 3px 18px; font-size: 0.78em; }
-  .card .card-tag { font-size: 0.6em; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); margin-bottom: 6px; display: block; }
+  /* ─── TWO COL ─── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
 
-  /* SERP TABLE */
-  .serp-table { width: 100%; border-collapse: collapse; font-size: 0.72em; margin-top: 16px; }
-  .serp-table th { background: rgba(16,185,129,0.12); color: var(--green); font-size: 0.8em; letter-spacing: 0.06em; text-transform: uppercase; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
-  .serp-table td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: top; color: var(--text); }
-  .serp-table tr:last-child td { border-bottom: none; }
-  .serp-table .winner { color: var(--green); font-weight: 700; }
-  .serp-table .gap { color: #fbbf24; font-size: 0.85em; }
-  .pill { display: inline-block; border-radius: 100px; padding: 2px 10px; font-size: 0.75em; font-weight: 700; }
-  .pill.red { background: rgba(248,113,113,0.15); color: #f87171; }
+  /* ─── CARD ─── */
+  .card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .card.accent { background: var(--green-glow); border-color: var(--border); }
+  .card h4 { color: #fff; font-size: 0.88em; font-weight: 700; margin-bottom: 8px; }
+  .card p { color: var(--muted); font-size: 0.76em; line-height: 1.55; }
+  .card .tag { font-size: 0.6em; color: var(--green); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 6px; }
+
+  /* ─── SERP ROWS ─── */
+  .serp-list { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+  .serp-row {
+    display: grid;
+    grid-template-columns: 36px 200px 1fr;
+    align-items: start;
+    gap: 14px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 12px 16px;
+  }
+  .serp-row.top { border-color: var(--border); background: var(--green-glow); }
+  .serp-rank { font-size: 0.7em; font-weight: 900; color: var(--muted); padding-top: 2px; }
+  .serp-row.top .serp-rank { color: var(--green); }
+  .serp-domain { font-size: 0.78em; font-weight: 700; color: #fff; }
+  .serp-row.top .serp-domain { color: var(--green); }
+  .serp-why { font-size: 0.72em; color: var(--muted); line-height: 1.45; }
+
+  /* ─── PILL ─── */
+  .pill { display: inline-block; border-radius: 100px; padding: 2px 10px; font-size: 0.7em; font-weight: 700; }
+  .pill.red { background: rgba(248,113,113,0.15); color: var(--red); }
   .pill.green { background: rgba(16,185,129,0.15); color: var(--green); }
-  .pill.yellow { background: rgba(251,191,36,0.15); color: #fbbf24; }
+  .pill.yellow { background: rgba(251,191,36,0.15); color: var(--yellow); }
 
-  /* KEYWORD TABLE */
-  .kw-table { width: 100%; border-collapse: collapse; font-size: 0.72em; margin-top: 16px; }
-  .kw-table th { color: var(--green); font-size: 0.78em; letter-spacing: 0.06em; text-transform: uppercase; padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
-  .kw-table td { padding: 9px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text); vertical-align: top; }
-  .kw-table tr:hover td { background: rgba(16,185,129,0.04); }
-  .kw-code { font-family: monospace; background: rgba(16,185,129,0.1); color: var(--green); padding: 2px 8px; border-radius: 4px; font-size: 0.9em; }
+  /* ─── KW TABLE ─── */
+  .kw-list { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+  .kw-row {
+    display: grid;
+    grid-template-columns: 1fr 80px 110px;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+  }
+  .kw-row.priority { border-color: var(--border); background: var(--green-glow); }
+  .kw-term { font-size: 0.76em; font-family: monospace; color: var(--green); }
+  .kw-row.priority .kw-term { color: #fff; font-family: monospace; }
+  .kw-intent { font-size: 0.68em; color: var(--muted); text-align: center; }
+  .kw-comp { font-size: 0.68em; text-align: right; }
 
-  /* TIMELINE */
-  .timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 24px; position: relative; }
-  .timeline::before { content: ''; position: absolute; top: 32px; left: 16%; right: 16%; height: 2px; background: linear-gradient(90deg, var(--green), rgba(16,185,129,0.2)); z-index: 0; }
-  .phase { position: relative; z-index: 1; padding: 0 16px; }
-  .phase-num { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--green); background: var(--navy); display: flex; align-items: center; justify-content: center; font-weight: 900; color: var(--green); font-size: 1em; margin: 12px auto 16px; }
-  .phase-title { text-align: center; color: #fff; font-weight: 700; font-size: 0.85em; margin-bottom: 8px; }
-  .phase-period { text-align: center; color: var(--green); font-size: 0.68em; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; }
-  .phase ul { list-style: none; padding: 0; }
-  .phase li { font-size: 0.72em; color: var(--muted); padding: 4px 0 4px 16px; }
-  .phase li::before { content: "·"; color: var(--green); left: 0; font-size: 1.4em; line-height: 0.9; }
+  /* ─── PHASE CARDS ─── */
+  .phases { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 20px; }
+  .phase-card { border-radius: 12px; padding: 22px; border: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.02); }
+  .phase-card .pnum { font-size: 2em; font-weight: 900; color: rgba(16,185,129,0.2); line-height: 1; margin-bottom: 10px; }
+  .phase-card h4 { color: #fff; font-size: 0.85em; font-weight: 700; margin-bottom: 4px; }
+  .phase-card .period { color: var(--green); font-size: 0.65em; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  .phase-card ul { margin: 0; }
+  .phase-card li { font-size: 0.72em; color: var(--muted); padding: 4px 0 4px 14px; border: none; }
+  .phase-card li::before { color: var(--green); content: "·"; font-size: 1.4em; line-height: 0.8; }
 
-  /* MEASUREMENT STACK */
-  .measure-stack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
-  .measure-card { border-radius: 12px; padding: 24px; position: relative; overflow: hidden; }
-  .measure-card::before { content: ''; position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; border-radius: 50%; opacity: 0.07; }
-  .measure-card.gsc { background: linear-gradient(135deg, #1a2f3f 0%, #0d1b2a 100%); border: 1px solid rgba(59,130,246,0.3); }
-  .measure-card.gsc::before { background: #3b82f6; }
-  .measure-card.ga { background: linear-gradient(135deg, #2a1f3f 0%, #1a0d2a 100%); border: 1px solid rgba(168,85,247,0.3); }
-  .measure-card.ga::before { background: #a855f7; }
-  .measure-card.peekaboo { background: linear-gradient(135deg, #0d2a1f 0%, #071a0f 100%); border: 1px solid var(--border); }
-  .measure-card.peekaboo::before { background: var(--green); }
-  .measure-card .tool-name { font-size: 0.7em; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
-  .measure-card.gsc .tool-name { color: #3b82f6; }
-  .measure-card.ga .tool-name { color: #a855f7; }
-  .measure-card.peekaboo .tool-name { color: var(--green); }
-  .measure-card h4 { font-size: 0.88em; color: #fff; margin: 0 0 12px; }
-  .measure-card .question { font-size: 0.72em; color: var(--muted); font-style: italic; margin-bottom: 14px; border-left: 2px solid rgba(255,255,255,0.1); padding-left: 10px; }
-  .measure-card ul { list-style: none; padding: 0; }
-  .measure-card li { font-size: 0.7em; color: var(--muted); padding: 3px 0 3px 14px; }
-  .measure-card li::before { content: "·"; position: absolute; left: 0; color: var(--green); }
+  /* ─── MEASURE CARDS ─── */
+  .measure-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 20px; }
+  .measure-card { border-radius: 12px; padding: 22px; }
+  .measure-card .tool { font-size: 0.62em; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+  .measure-card h4 { color: #fff; font-size: 0.85em; font-weight: 700; margin-bottom: 10px; }
+  .measure-card .q { font-size: 0.7em; color: var(--muted); font-style: italic; line-height: 1.5; margin-bottom: 14px; padding-left: 10px; border-left: 2px solid rgba(255,255,255,0.1); }
+  .measure-card li { font-size: 0.69em; color: var(--muted); padding: 3px 0 3px 14px; border: none; }
+  .measure-card li::before { content: "·"; color: var(--green); font-size: 1.4em; line-height: 0.8; }
+  .measure-card.gsc { background: linear-gradient(135deg,#0d1e34,#071424); border: 1px solid rgba(59,130,246,0.25); }
+  .measure-card.gsc .tool { color: #60a5fa; }
+  .measure-card.ga { background: linear-gradient(135deg,#1a0d30,#100820); border: 1px solid rgba(168,85,247,0.25); }
+  .measure-card.ga .tool { color: #c084fc; }
+  .measure-card.pk { background: linear-gradient(135deg,#071a10,#041009); border: 1px solid var(--border); }
+  .measure-card.pk .tool { color: var(--green); }
 
-  /* PRIORITY TABLE */
-  .priority-table { width: 100%; border-collapse: collapse; font-size: 0.7em; margin-top: 16px; }
-  .priority-table th { color: var(--green); font-size: 0.78em; letter-spacing: 0.06em; text-transform: uppercase; padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
-  .priority-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text); }
-  .priority-table tr:nth-child(1) td:first-child { color: var(--green); font-weight: 700; }
-  .num-badge { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: var(--green-dim); color: var(--green); font-weight: 900; font-size: 0.9em; margin-right: 6px; }
+  /* ─── ADVANTAGE ─── */
+  .adv-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 20px; }
+  .adv { background: var(--green-glow); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .adv .icon { font-size: 1.5em; margin-bottom: 8px; }
+  .adv h4 { color: #fff; font-size: 0.8em; font-weight: 700; margin-bottom: 6px; }
+  .adv p { color: var(--muted); font-size: 0.69em; line-height: 1.5; }
 
-  /* COMPETITOR CARD */
-  .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
-  .comp-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 18px; }
-  .comp-card .comp-name { font-size: 0.82em; font-weight: 800; color: #fff; margin-bottom: 6px; }
-  .comp-card .comp-why { font-size: 0.7em; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
-  .comp-card .comp-gap { font-size: 0.68em; color: #fbbf24; padding-left: 14px; position: relative; }
-  .comp-card .comp-gap::before { content: '↑'; position: absolute; left: 0; color: var(--green); }
+  /* ─── PRIORITY LIST ─── */
+  .priority-list { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+  .p-row {
+    display: grid;
+    grid-template-columns: 32px 1fr 140px 90px;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+  }
+  .p-row:first-child { border-color: var(--border); background: var(--green-glow); }
+  .p-num { font-size: 0.78em; font-weight: 900; color: var(--green); text-align: center; }
+  .p-action { font-size: 0.76em; color: #fff; }
+  .p-kw { font-size: 0.66em; color: var(--muted); font-family: monospace; }
+  .p-time { font-size: 0.66em; text-align: right; }
 
-  /* PROGRESS BAR */
-  .progress-bar { background: rgba(255,255,255,0.06); border-radius: 100px; height: 8px; margin: 6px 0 2px; }
-  .progress-fill { height: 8px; border-radius: 100px; background: linear-gradient(90deg, var(--green), #34d399); }
+  /* ─── NEXT STEPS ─── */
+  .steps { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+  }
+  .step-badge {
+    flex-shrink: 0;
+    background: var(--green-glow);
+    color: var(--green);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 0.62em;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin-top: 1px;
+  }
+  .step h4 { color: #fff; font-size: 0.82em; font-weight: 700; margin-bottom: 3px; }
+  .step p { color: var(--muted); font-size: 0.71em; }
 
-  /* VELOQ LOGO */
-  .veloq-logo { color: #fff; font-weight: 900; font-size: 1.1em; letter-spacing: -0.04em; }
-  .veloq-logo span { color: var(--green); }
+  /* ─── CLOSING SLIDE ─── */
+  .slide-close { background: radial-gradient(ellipse at 85% 15%, rgba(16,185,129,0.12) 0%, transparent 55%), var(--navy) !important; }
 
-  /* AI PROMPTS */
-  .prompt-list { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
-  .prompt { background: rgba(16,185,129,0.06); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; font-size: 0.72em; color: var(--text); font-style: italic; display: flex; align-items: center; gap: 10px; }
-  .prompt::before { content: '🤖'; font-style: normal; flex-shrink: 0; }
+  /* ─── FOOTER ─── */
+  .foot { position: absolute; bottom: 18px; right: 56px; font-size: 0.52em; color: rgba(255,255,255,0.18); letter-spacing: 0.06em; }
 
-  /* UNFAIR ADVANTAGE */
-  .advantage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 20px; }
-  .adv-card { background: var(--green-dim2); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
-  .adv-card .adv-icon { font-size: 1.6em; margin-bottom: 10px; }
-  .adv-card h4 { font-size: 0.8em; color: #fff; font-weight: 700; margin: 0 0 6px; }
-  .adv-card p { font-size: 0.7em; color: var(--muted); margin: 0; }
-
-  /* NEXT STEPS */
-  .next-steps { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
-  .step { display: flex; align-items: flex-start; gap: 16px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 16px 20px; }
-  .step-week { flex-shrink: 0; background: var(--green-dim); color: var(--green); border-radius: 6px; padding: 4px 10px; font-size: 0.65em; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; margin-top: 2px; }
-  .step-content h4 { color: #fff; font-size: 0.82em; font-weight: 700; margin: 0 0 4px; }
-  .step-content p { color: var(--muted); font-size: 0.7em; margin: 0; }
-
-  /* HIGHLIGHT BOX */
-  .highlight-box { background: var(--green-dim); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin-top: 20px; }
-  .highlight-box p { color: var(--text); font-size: 0.82em; margin: 0; line-height: 1.6; }
-  .highlight-box strong { color: var(--green); }
-
-  /* CLOSING SLIDE */
-  .slide-close { background: radial-gradient(ellipse at 80% 20%, rgba(16,185,129,0.15) 0%, transparent 60%), var(--navy); }
-
-  /* FOOTER */
-  .slide-footer { position: absolute; bottom: 20px; right: 60px; font-size: 0.55em; color: rgba(255,255,255,0.2); letter-spacing: 0.06em; }
-
-  /* REVEAL OVERRIDES */
-  .reveal .progress { color: var(--green); }
+  /* REVEAL CHROME */
+  .reveal .progress { color: var(--green); height: 3px; }
   .reveal .controls { color: var(--green); }
-  .reveal .slide-number { color: var(--muted); }
-
-  /* CENTERED CONTENT FOR DIVIDERS */
-  .center-content { text-align: center !important; }
-
-  /* VELOQ ABSENT */
-  .absent { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); color: #f87171; border-radius: 4px; padding: 2px 8px; font-size: 0.8em; font-weight: 700; }
-  .present { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); color: var(--green); border-radius: 4px; padding: 2px 8px; font-size: 0.8em; font-weight: 700; }
+  .reveal .slide-number { color: var(--muted); font-size: 0.7em; }
 </style>
 </head>
 <body>
 <div class="reveal">
 <div class="slides">
 
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 1: TITLE                                   -->
-<!-- ─────────────────────────────────────────────── -->
+<!-- ══════════════════════════════════════════════ -->
+<!-- 1 · TITLE                                      -->
+<!-- ══════════════════════════════════════════════ -->
 <section class="slide-title" data-background-color="#020817">
-  <div class="eyebrow">SEO & Content Strategy — March 2026</div>
+  <span class="eyebrow">SEO & Content Strategy — March 2026</span>
   <h1>Growing Veloq's<br><span>Organic Presence</span></h1>
-  <p style="color:var(--muted);font-size:0.85em;max-width:560px;margin-top:16px;">
-    A research-backed strategy to turn veloq.com from a 13-page brochure into the most authoritative online resource for grocery automation decision-makers.
-  </p>
+  <p class="subtitle">Turning veloq.com from a 13-page brochure into the most authoritative online resource for grocery automation decision-makers.</p>
   <div class="meta">
-    <span>📊 Prepared by Filipe Lins Duarte</span>
+    <span>📊 Filipe Lins Duarte</span>
     <span>📅 March 2026</span>
-    <span>🎯 For: Konstantin, Veloq / Rohlik Group</span>
+    <span>🎯 Konstantin — Veloq / Rohlik Group</span>
   </div>
-  <div class="slide-footer">veloq.com — Confidential</div>
+  <div class="foot">veloq.com · Confidential</div>
 </section>
 
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 2: THE SITUATION                          -->
-<!-- ─────────────────────────────────────────────── -->
+<!-- ══════════════════════════════════════════════ -->
+<!-- 2 · CURRENT STATE                              -->
+<!-- ══════════════════════════════════════════════ -->
 <section data-background-color="#020817">
-  <h3>The Starting Point</h3>
+  <span class="eyebrow">The Starting Point</span>
   <h2>Where Veloq Stands Today</h2>
-  <div class="stats-grid">
-    <div class="stat-card red">
-      <span class="num">13</span>
-      <span class="label">Indexed Pages</span>
-    </div>
-    <div class="stat-card red">
-      <span class="num">~200</span>
-      <span class="label">Weekly Active Users</span>
-    </div>
-    <div class="stat-card red">
-      <span class="num">~0</span>
-      <span class="label">Backlinks</span>
-    </div>
-    <div class="stat-card red">
-      <span class="num">~100%</span>
-      <span class="label">Branded Traffic</span>
-    </div>
+  <div class="stat-row">
+    <div class="stat bad"><span class="n">13</span><span class="l">Indexed Pages</span></div>
+    <div class="stat bad"><span class="n">~200</span><span class="l">Weekly Users</span></div>
+    <div class="stat bad"><span class="n">~0</span><span class="l">Backlinks</span></div>
+    <div class="stat bad"><span class="n">100%</span><span class="l">Branded Traffic</span></div>
   </div>
-  <div class="highlight-box" style="margin-top:24px;">
-    <p>The site is spending <strong>€1,000/week on LinkedIn</strong> targeting a tiny, finite audience at risk of ad fatigue. Organic search is generating almost nothing — not because the product isn't relevant, but because there's nothing for Google to rank. <strong>This is entirely fixable.</strong></p>
+  <div class="highlight" style="margin-top:22px;">
+    <p>€1,000/week on LinkedIn, targeting a finite audience at risk of ad fatigue. <strong>Organic search generates almost nothing</strong> — not because Veloq isn't relevant, but because there's not enough on the site for Google to rank. This is entirely fixable.</p>
   </div>
-  <div class="slide-footer">veloq.com — Confidential</div>
+  <div class="foot">veloq.com · Confidential</div>
 </section>
 
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 3: SECTION DIVIDER                        -->
-<!-- ─────────────────────────────────────────────── -->
-<section class="slide-divider" data-background-color="#070e22">
-  <div class="section-num">01</div>
+<!-- ══════════════════════════════════════════════ -->
+<!-- 3 · DIVIDER: COMPETITION                       -->
+<!-- ══════════════════════════════════════════════ -->
+<section class="slide-divider" data-background-color="#07111f">
+  <span class="section-no">01</span>
   <h2>Competitive<br>Landscape</h2>
-  <p>Who's winning the SERP and why — and where the gaps are wide open.</p>
+  <p>Who owns the space right now — and where the gaps are wide open.</p>
 </section>
 
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 4: COMPETITORS                            -->
-<!-- ─────────────────────────────────────────────── -->
+<!-- ══════════════════════════════════════════════ -->
+<!-- 4 · COMPETITORS                                -->
+<!-- ══════════════════════════════════════════════ -->
 <section data-background-color="#020817">
-  <h3>The Competition</h3>
-  <h2>Who Owns the Space Right Now</h2>
-  <div class="comp-grid">
-    <div class="comp-card">
-      <div class="comp-name">🏆 Ocado Smart Platform (OSP)</div>
-      <div class="comp-why">25+ years of operator experience translated into rich content. End-to-end platform across ecommerce, fulfillment, last mile, supply chain. Ranking across dozens of grocery automation queries.</div>
-      <div class="comp-gap">Veloq's edge: OSP requires massive CAPEX + long lock-in. Veloq is modular, faster to deploy, and operator-born.</div>
-    </div>
-    <div class="comp-card">
-      <div class="comp-name">🤖 AutoStore</div>
-      <div class="comp-why">1,850+ systems worldwide. Strong /industries/grocery page. Ranks well for warehouse hardware terms. Well-structured site with clear industry verticals.</div>
-      <div class="comp-gap">Veloq's edge: AutoStore is hardware-first. Veloq is a software platform. Different buying decision.</div>
-    </div>
-    <div class="comp-card">
-      <div class="comp-name">🏭 Dematic / Swisslog</div>
-      <div class="comp-why">Industrial giants with massive domain authority. Swisslog specifically ranking with blog content like "Five Essential Capabilities of E-Grocery Fulfillment Software." Content volume is huge.</div>
-      <div class="comp-gap">Veloq's edge: Their grocery content is generic. Nobody is writing from inside an operating eGrocer.</div>
-    </div>
-    <div class="comp-card">
-      <div class="comp-name">⚡ Fulfil.com</div>
-      <div class="comp-why">A smaller, focused player — but ranking #1 for "eGrocery fulfillment software" and "online grocery fulfillment automation platform." Built their entire brand around this specific terminology.</div>
-      <div class="comp-gap">Veloq's edge: Fulfil.com has no operational track record. Veloq has $1.7B+ in revenue across its network.</div>
-    </div>
-  </div>
-  <div class="slide-footer">veloq.com — Confidential</div>
-</section>
-
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 5: SECTION DIVIDER                        -->
-<!-- ─────────────────────────────────────────────── -->
-<section class="slide-divider" data-background-color="#070e22">
-  <div class="section-num">02</div>
-  <h2>Live SERP<br>Analysis</h2>
-  <p>Real search results, pulled March 2026 — who's showing up for Veloq's target keywords.</p>
-</section>
-
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 6: SERP — EGROCERY FULFILLMENT SOFTWARE   -->
-<!-- ─────────────────────────────────────────────── -->
-<section data-background-color="#020817">
-  <h3>SERP Analysis · Keyword 1</h3>
-  <h2><span style="color:var(--green)">"eGrocery fulfillment software"</span></h2>
-  <table class="serp-table">
-    <tr><th>#</th><th>Ranking Page</th><th>Why They Win</th><th>Veloq Gap</th></tr>
-    <tr><td>1</td><td class="winner">Fulfil.com</td><td>Brand built entirely around this term. Dedicated homepage targeting exact query.</td><td rowspan="5" style="vertical-align:middle;text-align:center;"><span class="absent">Not ranking</span><br><br><span class="gap">Direct product match.<br>A dedicated page should reach top 5 in 8–10 weeks.</span></td></tr>
-    <tr><td>2</td><td>Mercatus.com</td><td>Strong /fulfillment/ landing page, established brand in grocery tech</td></tr>
-    <tr><td>3</td><td>Food Logistics (editorial)</td><td>Industry publication. Article about Fabric's approach to grocery software.</td></tr>
-    <tr><td>4</td><td>WaveGrocery.com</td><td>Dedicated /grocery-order-fulfillment-software page with exact-match URL slug</td></tr>
-    <tr><td>5</td><td>Swisslog Blog</td><td>"Five Essential Capabilities of E-Grocery Fulfillment Software" — article with keyword in title</td></tr>
-  </table>
-  <div class="slide-footer">veloq.com — Confidential</div>
-</section>
-
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 7: SERP — GROCERY WAREHOUSE AUTOMATION    -->
-<!-- ─────────────────────────────────────────────── -->
-<section data-background-color="#020817">
-  <h3>SERP Analysis · Keyword 2</h3>
-  <h2><span style="color:var(--green)">"grocery warehouse automation software"</span></h2>
-  <table class="serp-table">
-    <tr><th>#</th><th>Ranking Page</th><th>Why They Win</th><th>Veloq Gap</th></tr>
-    <tr><td>1</td><td class="winner">Dematic</td><td>Global brand authority + dedicated /industries/grocery/ page. 200+ years of domain history.</td><td rowspan="5" style="vertical-align:middle;text-align:center;"><span class="absent">Not ranking</span><br><br><span class="gap">Dematic's content is generic. A Veloq page with real operator metrics would outperform it on specificity.</span></td></tr>
-    <tr><td>2</td><td>Exotec</td><td>Clean /industries/grocery-fulfillment-solutions/ page — exact keyword structure in URL</td></tr>
-    <tr><td>3</td><td>AutoStore</td><td>/industries/grocery — well-structured, clear taxonomy, strong domain</td></tr>
-    <tr><td>4</td><td>Hai Robotics</td><td>Dedicated /industries/grocery page. Benefit: weaker domain than Dematic — beatable.</td></tr>
-    <tr><td>5</td><td>Food Logistics (editorial)</td><td>Editorial coverage of Fabric's software approach</td></tr>
-  </table>
-  <div class="slide-footer">veloq.com — Confidential</div>
-</section>
-
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 8: SERP — MFC vs CFC                     -->
-<!-- ─────────────────────────────────────────────── -->
-<section data-background-color="#020817">
-  <h3>SERP Analysis · Keyword 3 — Biggest Opportunity</h3>
-  <h2><span style="color:var(--green)">"micro fulfillment center vs central fulfillment center"</span></h2>
-  <table class="serp-table">
-    <tr><th>#</th><th>Ranking Page</th><th>Why They Win</th><th>Veloq Opportunity</th></tr>
-    <tr><td>1</td><td class="winner">Berkshire Grey</td><td>Dedicated comparison article. Well-structured. But: written by a robotics vendor, not an operator.</td><td rowspan="5" style="vertical-align:middle;text-align:center;"><span class="present">Wide open</span><br><br><span class="gap" style="color:var(--green)">Nobody in top 10 has run an actual fulfillment center. Veloq has 12 across 5 markets. This is the single most winnable high-intent keyword.</span></td></tr>
-    <tr><td>2</td><td>Seko Logistics</td><td>General logistics content. No depth on grocery specifically.</td></tr>
-    <tr><td>3</td><td>City National Bank</td><td>MFC explainer — generic finance-sector content. Low authority on this topic.</td></tr>
-    <tr><td>4</td><td>WaveGrocery</td><td>Dark store vs MFC comparison — similar angle, niche brand</td></tr>
-    <tr><td>5</td><td>PhaseV / ShipBob</td><td>Generic ecommerce fulfillment content — not grocery-specific</td></tr>
-  </table>
-  <div class="slide-footer">veloq.com — Confidential</div>
-</section>
-
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 9: SERP — COST PER ORDER + SIDE OF STORE  -->
-<!-- ─────────────────────────────────────────────── -->
-<section data-background-color="#020817">
-  <h3>SERP Analysis · Keywords 4 & 5</h3>
+  <span class="eyebrow">The Competition</span>
+  <h2>Who's Winning and Why</h2>
   <div class="two-col">
+    <div class="card">
+      <span class="tag">Direct competitor</span>
+      <h4>🏆 Ocado Smart Platform</h4>
+      <p>25+ years of operator experience. End-to-end platform with content across ecommerce, fulfillment, last mile, and supply chain. Strong domain authority and rich editorial presence.</p>
+      <p style="margin-top:10px;color:var(--green);font-size:0.72em;font-weight:700;">Veloq's edge → Modular, faster to deploy, no massive lock-in. OSP rollout is publicly faltering (Feb 2026 Bloomberg).</p>
+    </div>
+    <div class="card">
+      <span class="tag">Direct competitor</span>
+      <h4>🤖 AutoStore</h4>
+      <p>1,850+ systems worldwide. Dedicated /industries/grocery page ranking strongly. Clear site taxonomy — one page per industry, well structured.</p>
+      <p style="margin-top:10px;color:var(--green);font-size:0.72em;font-weight:700;">Veloq's edge → AutoStore is hardware-first. Veloq is a software platform. Different buying decision.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Generalist giant</span>
+      <h4>🏭 Dematic / Swisslog</h4>
+      <p>Industrial automation giants. Massive domain authority and large content libraries. Swisslog specifically ranks with dedicated eGrocery blog content.</p>
+      <p style="margin-top:10px;color:var(--green);font-size:0.72em;font-weight:700;">Veloq's edge → Their grocery content is generic. Nobody writes from inside a real operating eGrocer.</p>
+    </div>
+    <div class="card accent">
+      <span class="tag">Punching above its weight</span>
+      <h4>⚡ Fulfil.com</h4>
+      <p>A smaller player ranking #1 for "eGrocery fulfillment software" and "online grocery fulfillment automation." No real operational track record — just great keyword targeting.</p>
+      <p style="margin-top:10px;color:var(--green);font-size:0.72em;font-weight:700;">Veloq's edge → $1.7B+ network vs Fulfil's zero. Veloq should own this ranking.</p>
+    </div>
+  </div>
+  <div class="foot">veloq.com · Confidential</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 5 · DIVIDER: SERP                              -->
+<!-- ══════════════════════════════════════════════ -->
+<section class="slide-divider" data-background-color="#07111f">
+  <span class="section-no">02</span>
+  <h2>Live SERP<br>Analysis</h2>
+  <p>Real Google results, pulled March 2026 — who ranks for Veloq's target keywords and why.</p>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 6 · SERP: DECISION KEYWORDS                    -->
+<!-- ══════════════════════════════════════════════ -->
+<section data-background-color="#020817">
+  <span class="eyebrow">SERP Analysis · Decision-Stage Keywords</span>
+  <h2>"eGrocery fulfillment software"</h2>
+  <div class="serp-list">
+    <div class="serp-row top">
+      <div class="serp-rank">#1</div>
+      <div class="serp-domain">Fulfil.com</div>
+      <div class="serp-why">Entire brand built around this exact term. Dedicated homepage targeting the query. Zero operational track record — just smart keyword alignment.</div>
+    </div>
+    <div class="serp-row">
+      <div class="serp-rank">#2</div>
+      <div class="serp-domain">Mercatus.com</div>
+      <div class="serp-why">Strong /fulfillment/ landing page with clear value proposition and established brand in grocery tech.</div>
+    </div>
+    <div class="serp-row">
+      <div class="serp-rank">#5</div>
+      <div class="serp-domain">Swisslog Blog</div>
+      <div class="serp-why">"Five Essential Capabilities of E-Grocery Fulfillment Software" — keyword in title, decent length, no real data.</div>
+    </div>
+  </div>
+  <div class="highlight" style="margin-top:16px;">
+    <p><strong>Veloq is absent.</strong> This is a direct product match — Veloq IS eGrocery fulfillment software. A dedicated solutions page should reach the top 5 within 8–10 weeks.</p>
+  </div>
+  <div class="foot">veloq.com · Confidential</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 7 · SERP: WAREHOUSE AUTOMATION                 -->
+<!-- ══════════════════════════════════════════════ -->
+<section data-background-color="#020817">
+  <span class="eyebrow">SERP Analysis · Infrastructure Keywords</span>
+  <h2>"grocery warehouse automation software"</h2>
+  <div class="serp-list">
+    <div class="serp-row top">
+      <div class="serp-rank">#1</div>
+      <div class="serp-domain">Dematic</div>
+      <div class="serp-why">Wins on domain authority alone. 200+ years in industrial automation. Their grocery page is generic — no operator depth.</div>
+    </div>
+    <div class="serp-row">
+      <div class="serp-rank">#3</div>
+      <div class="serp-domain">Exotec</div>
+      <div class="serp-why">Clean /industries/grocery-fulfillment-solutions/ URL structure. Keyword in the slug — a simple structural win.</div>
+    </div>
+    <div class="serp-row">
+      <div class="serp-rank">#4</div>
+      <div class="serp-domain">AutoStore</div>
+      <div class="serp-why">/industries/grocery — well-structured, strong domain, but hardware-focused not software.</div>
+    </div>
+  </div>
+  <div class="highlight" style="margin-top:16px;">
+    <p><strong>The insight:</strong> Dematic, Exotec, and AutoStore are all hardware/industrial players. A Veloq page with real grocery-specific operator metrics outflanks them on relevance. <strong>This is winnable.</strong></p>
+  </div>
+  <div class="foot">veloq.com · Confidential</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 8 · SERP: BIGGEST OPPORTUNITY                  -->
+<!-- ══════════════════════════════════════════════ -->
+<section data-background-color="#020817">
+  <span class="eyebrow">SERP Analysis · Biggest Content Opportunity</span>
+  <h2>"micro fulfillment center vs<br>central fulfillment center"</h2>
+  <div class="two-col" style="margin-top:20px;">
     <div>
-      <p style="color:var(--green);font-size:0.72em;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">"grocery fulfillment cost per order benchmark"</p>
-      <table class="serp-table" style="margin-top:8px;">
-        <tr><th>#</th><th>Who Ranks</th></tr>
-        <tr><td>1</td><td class="winner">MWPVL.com — specialist logistics consultancy with real cost data</td></tr>
-        <tr><td>2</td><td>SpeedCommerce, Kardex, ShipBob — generic ecommerce fulfillment content</td></tr>
-        <tr><td>3–10</td><td>No grocery automation vendor appears anywhere in top 10</td></tr>
-      </table>
-      <div class="highlight-box" style="margin-top:12px;padding:14px 16px;">
-        <p style="font-size:0.7em;"><strong>Opportunity:</strong> Veloq runs 12 live FCs. Publishing real operator benchmarks — even anonymised — would be the most authoritative result on this query and would earn press links naturally.</p>
+      <div class="serp-list">
+        <div class="serp-row top">
+          <div class="serp-rank">#1</div>
+          <div class="serp-domain">Berkshire Grey</div>
+          <div class="serp-why">Dedicated comparison article. Well-structured. Written by a robotics vendor who has never run a fulfillment center.</div>
+        </div>
+        <div class="serp-row">
+          <div class="serp-rank">#2–10</div>
+          <div class="serp-domain">Finance sites, logistics co's, ShipBob</div>
+          <div class="serp-why">Generic ecommerce fulfillment content. None written from a grocery operator's perspective.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card accent">
+      <h4 style="font-size:1em;margin-bottom:14px;">🎯 Why This is the #1 Priority</h4>
+      <ul>
+        <li>Nobody in the top 10 has actually operated a fulfillment center</li>
+        <li>Veloq has run 12 FCs across 5 markets</li>
+        <li>Real pick rates, real deployment timelines, real cost ranges</li>
+        <li>Low competition — the ranking content is thin</li>
+        <li>High intent — buyers researching this are evaluating significant investments</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot">veloq.com · Confidential</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 9 · SERP: PROOF POINT + TIMING                 -->
+<!-- ══════════════════════════════════════════════ -->
+<section data-background-color="#020817">
+  <span class="eyebrow">SERP Analysis · A Proof Point + A Timing Play</span>
+  <h2>Two Key Signals</h2>
+  <div class="two-col" style="margin-top:18px;">
+    <div>
+      <p style="font-size:0.72em;font-weight:700;color:var(--green);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">"side of store fulfillment grocery automation"</p>
+      <div class="card accent">
+        <h4>🥇 Veloq ranks #1 here</h4>
+        <p>Because there's a dedicated page at /side-of-store. That's it. That's the whole strategy. Build the page → rank for the term.</p>
+        <p style="margin-top:10px;color:var(--green);font-weight:700;font-size:0.75em;">This proves the approach works. Replicate it across every solution and keyword.</p>
       </div>
     </div>
     <div>
-      <p style="color:var(--green);font-size:0.72em;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">"side of store fulfillment grocery automation"</p>
-      <table class="serp-table" style="margin-top:8px;">
-        <tr><th>#</th><th>Who Ranks</th></tr>
-        <tr><td style="color:var(--green);font-weight:700;">🥇 1</td><td style="color:var(--green);font-weight:700;">Veloq.com — /side-of-store ✅</td></tr>
-        <tr><td>2</td><td>Tompkins Robotics</td></tr>
-        <tr><td>3+</td><td>Geek+, Reddit, Fulfil.com</td></tr>
-      </table>
-      <div class="highlight-box" style="margin-top:12px;padding:14px 16px;">
-        <p style="font-size:0.7em;"><strong>Proof point:</strong> Veloq already ranks #1 here because there's a dedicated page. <strong>This is the entire strategy</strong> — build the page, rank for the term. Repeat across all solutions and keywords.</p>
+      <p style="font-size:0.72em;font-weight:700;color:var(--yellow);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">"Ocado Smart Platform alternatives"</p>
+      <div class="card">
+        <h4>⏰ A Perfectly Timed Opportunity</h4>
+        <p>Top 10 results: CBInsights, MarketBeat, Bloomberg, AlternativeTo.net. <strong style="color:#fff;">Not a single automation vendor appears.</strong></p>
+        <p style="margin-top:10px;color:var(--yellow);font-size:0.75em;">Bloomberg (Feb 2026): "Ocado cuts 5% of staff as warehouse tech rollout stutters." Buyers are questioning OSP right now. Veloq should be the answer they find.</p>
       </div>
     </div>
   </div>
-  <div class="slide-footer">veloq.com — Confidential</div>
+  <div class="foot">veloq.com · Confidential</div>
 </section>
 
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 10: SERP — OSP ALTERNATIVES               -->
-<!-- ─────────────────────────────────────────────── -->
+<!-- ══════════════════════════════════════════════ -->
+<!-- 10 · DIVIDER: STRATEGY                         -->
+<!-- ══════════════════════════════════════════════ -->
+<section class="slide-divider" data-background-color="#07111f">
+  <span class="section-no">03</span>
+  <h2>The Strategy</h2>
+  <p>Keywords to target, content to build, and the order to do it in.</p>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- 11 · KEYWORD PRIORITIES                        -->
+<!-- ══════════════════════════════════════════════ -->
 <section data-background-color="#020817">
-  <h3>SERP Analysis · Keyword 6 — Strategic Opportunity</h3>
-  <h2><span style="color:var(--green)">"Ocado Smart Platform alternatives"</span></h2>
-  <table class="serp-table">
-    <tr><th>#</th><th>Who Ranks</th><th>What They Are</th><th>The Opportunity</th></tr>
-    <tr><td>1</td><td>CBInsights</td><td>Financial data / competitor database</td><td rowspan="5" style="vertical-align:middle;"><span class="present">Wide open</span><br><br><span style="font-size:0.75em;color:var(--text);">Not a single actual automation vendor ranks here. Bloomberg is running stories about <strong style="color:#fbbf24;">Ocado cutting 5% of staff and warehouse rollout faltering</strong> (Feb 2026).<br><br>Buyers are questioning OSP right now. Veloq should be the answer they find.</span></td></tr>
-    <tr><td>2</td><td>MarketBeat</td><td>Stock market competitor analysis</td></tr>
-    <tr><td>3</td><td>Bloomberg</td><td>News: "Ocado cuts staff as warehouse tech rollout stutters"</td></tr>
-    <tr><td>4</td><td>AlternativeTo.net</td><td>Software directory</td></tr>
-    <tr><td>5</td><td>Latka / CBInsights</td><td>Revenue analytics, financial databases</td></tr>
-  </table>
-  <div class="slide-footer">veloq.com — Confidential</div>
+  <span class="eyebrow">Target Keywords</span>
+  <h2>Where to Focus First</h2>
+  <div class="kw-list">
+    <div class="kw-row priority">
+      <div class="kw-term">MFC vs central fulfillment center</div>
+      <div class="kw-intent">Researcher</div>
+      <div class="kw-comp"><span class="pill green">Low competition</span></div>
+    </div>
+    <div class="kw-row priority">
+      <div class="kw-term">eGrocery fulfillment software</div>
+      <div class="kw-intent">Buyer</div>
+      <div class="kw-comp"><span class="pill yellow">Medium</span></div>
+    </div>
+    <div class="kw-row priority">
+      <div class="kw-term">Ocado Smart Platform alternatives</div>
+      <div class="kw-intent">Evaluator</div>
+      <div class="kw-comp"><span class="pill green">Low competition</span></div>
+    </div>
+    <div class="kw-row">
+      <div class="kw-term">grocery warehouse automation software</div>
+      <div class="kw-intent">Buyer</div>
+      <div class="kw-comp"><span class="pill yellow">Medium</span></div>
+    </div>
+    <div class="kw-row">
+      <div class="kw-term">grocery warehouse execution system WES</div>
+      <div class="kw-intent">Buyer</div>
+      <div class="kw-comp"><span class="pill yellow">Medium</span></div>
+    </div>
+    <div class="kw-row">
+      <div class="kw-term">grocery fulfillment cost per order benchmark</div>
+      <div class="kw-intent">Researcher</div>
+      <div class="kw-comp"><span class="pill green">Low competition</span></div>
+    </div>
+  </div>
+  <div class="foot">veloq.com · Confidential</div>
 </section>
 
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 11: SECTION DIVIDER                       -->
-<!-- ─────────────────────────────────────────────── -->
-<section class="slide-divider" data-background-color="#070e22">
-  <div class="section-num">03</div>
-  <h2>Keyword<br>Opportunity Map</h2>
-  <p>Where to target first, prioritised by intent, competition, and Veloq's ability to win.</p>
-</section>
-
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 12: KEYWORD MAP TIER 1                    -->
-<!-- ─────────────────────────────────────────────── -->
+<!-- ══════════════════════════════════════════════ -->
+<!-- 12 · THREE-PHASE ROADMAP                       -->
+<!-- ══════════════════════════════════════════════ -->
 <section data-background-color="#020817">
-  <h3>Target Keywords</h3>
-  <h2>Tier 1 — High Intent, Decision Stage</h2>
-  <table class="kw-table">
-    <tr><th>Keyword</th><th>Intent</th><th>Competition</th><th>Veloq's Angle</th></tr>
-    <tr>
-      <td><span class="kw-code">eGrocery fulfillment software</span></td>
-      <td><span class="pill green">Buyer</span></td>
-      <td><div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>Medium</td>
-      <td>Direct product match. Dedicated solutions page.</td>
-    </tr>
-    <tr>
-      <td><span class="kw-code">grocery warehouse automation software</span></td>
-      <td><span class="pill green">Buyer</span></td>
-      <td><div class="progress-bar"><div class="progress-fill" style="width:55%"></div></div>Medium-High</td>
-      <td>Outflank Dematic on specificity with operator depth.</td>
-    </tr>
-    <tr>
-      <td><span class="kw-code">online grocery fulfillment automation platform</span></td>
-      <td><span class="pill green">Buyer</span></td>
-      <td><div class="progress-bar"><div class="progress-fill" style="width:45%"></div></div>Medium</td>
-      <td>Ocado ranking with a blog post — beatable with a product page.</td>
-    </tr>
-    <tr>
-      <td><span class="kw-code">same-day grocery fulfillment platform</span></td>
-      <td><span class="pill green">Buyer</span></td>
-      <td><div class="progress-bar"><div class="progress-fill" style="width:30%"></div></div>Low-Medium</td>
-      <td>Exact match with Veloq's hero message. Low competition.</td>
-    </tr>
-    <tr>
-      <td><span class="kw-code">grocery warehouse execution system WES</span></td>
-      <td><span class="pill green">Buyer</span></td>
-      <td><div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>Medium</td>
-      <td>Veloq's WES module has no dedicated page. Create it.</td>
-    </tr>
-  </table>
-  <div class="slide-footer">veloq.com — Confidential</div>
-</section>
-
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 13: KEYWORD MAP TIER 2                    -->
-<!-- ─────────────────────────────────────────────── -->
-<section data-background-color="#020817">
-  <h3>Target Keywords</h3>
-  <h2>Tier 2 — Informational, Builds Authority</h2>
-  <table class="kw-table">
-    <tr><th>Keyword</th><th>Value</th><th>Competition</th><th>Veloq's Angle</th></tr>
-    <tr>
-      <td><span class="kw-code">micro fulfillment center vs central fulfillment center</span></td>
-      <td><span class="pill yellow">High</span></td>
-      <td><div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>Low</td>
-      <td><strong style="color:var(--green)">Biggest opportunity.</strong> Operator perspective. Veloq has real data from 12 FCs.</td>
-    </tr>
-    <tr>
-      <td><span class="kw-code">eGrocery fulfillment cost per order benchmark</span></td>
-      <td><span class="pill yellow">High</span></td>
-      <td><div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>Low</td>
-      <td>No vendor has this. Rohlik data makes it immediately authoritative.</td>
-    </tr>
-    <tr>
-      <td><span class="kw-code">side of store fulfillment automation</span></td>
-      <td><span class="pill green">Ranking</span></td>
-      <td><div class="progress-bar"><div class="progress-fill" style="width:15%"></div></div>Very Low</td>
-      <td>Already #1. Expand the page with more depth.</td>
-    </tr>
-    <tr>
-      <td><span class="kw-code">grocery dark store automation software</span></td>
-      <td><span class="pill yellow">Medium</span></td>
-      <td><div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>Low</td>
-      <td>Comparison/explainer. Ties into Veloq's standalone FC solution.</td>
-    </tr>
-    <tr>
-      <td><span class="kw-code">Ocado Smart Platform alternatives</span></td>
-      <td><span class="pill yellow">High</span></td>
-      <td><div class="progress-bar"><div class="progress-fill" style="width:15%"></div></div>Very Low</td>
-      <td>Zero vendor presence in top 10. Timed perfectly with Ocado's bad press cycle.</td>
-    </tr>
-  </table>
-  <div class="slide-footer">veloq.com — Confidential</div>
-</section>
-
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 14: SECTION DIVIDER                       -->
-<!-- ─────────────────────────────────────────────── -->
-<section class="slide-divider" data-background-color="#070e22">
-  <div class="section-num">04</div>
-  <h2>Content<br>Strategy</h2>
-  <p>A phased plan to build topical authority across three horizons.</p>
-</section>
-
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 15: CONTENT STRATEGY                      -->
-<!-- ─────────────────────────────────────────────── -->
-<section data-background-color="#020817">
-  <h3>The Roadmap</h3>
+  <span class="eyebrow">The Content Roadmap</span>
   <h2>Three Phases to Topical Authority</h2>
-  <div class="timeline">
-    <div class="phase">
-      <div class="phase-num">1</div>
-      <div class="phase-title">Fix the Foundation</div>
-      <div class="phase-period">Months 1–2</div>
+  <div class="phases">
+    <div class="phase-card">
+      <div class="pnum">01</div>
+      <h4>Fix the Foundation</h4>
+      <div class="period">Months 1–2</div>
       <ul>
-        <li>Create /solutions/egrocery-fulfillment-software/</li>
-        <li>Create /solutions/grocery-warehouse-automation/</li>
+        <li>Create dedicated solution pages for each product</li>
         <li>Create /software/warehouse-execution-system/</li>
-        <li>Create /software/wms/</li>
-        <li>Add proper meta titles + descriptions to all pages</li>
+        <li>Optimise all meta titles + descriptions</li>
         <li>Set up GSC, GA4, AI Peekaboo tracking</li>
       </ul>
-      <p style="text-align:center;font-size:0.65em;color:var(--green);margin-top:12px;font-weight:700;">13 → 25+ indexed pages</p>
+      <p style="color:var(--green);font-size:0.68em;font-weight:700;margin-top:14px;">13 → 25+ indexed pages</p>
     </div>
-    <div class="phase">
-      <div class="phase-num">2</div>
-      <div class="phase-title">Build the Content Hub</div>
-      <div class="phase-period">Months 2–4</div>
+    <div class="phase-card">
+      <div class="pnum">02</div>
+      <h4>Build the Content Hub</h4>
+      <div class="period">Months 2–4</div>
       <ul>
         <li>MFC vs CFC operator guide</li>
-        <li>Grocery cost per order benchmarks</li>
-        <li>How long to go live with an automated FC?</li>
-        <li>Why eGrocery automation projects fail to deliver ROI</li>
-        <li>Side-of-store vs dark store: which model?</li>
-        <li>What >90 NPS looks like in practice</li>
+        <li>Grocery cost-per-order benchmarks</li>
+        <li>From site access to go-live in 8 months</li>
+        <li>Why eGrocery automation projects fail</li>
+        <li>Side-of-store vs dark store comparison</li>
       </ul>
-      <p style="text-align:center;font-size:0.65em;color:var(--green);margin-top:12px;font-weight:700;">2 articles/month, operator-led</p>
+      <p style="color:var(--green);font-size:0.68em;font-weight:700;margin-top:14px;">2 articles/month, operator-led</p>
     </div>
-    <div class="phase">
-      <div class="phase-num">3</div>
-      <div class="phase-title">Build Authority</div>
-      <div class="phase-period">Months 4–6</div>
+    <div class="phase-card">
+      <div class="pnum">03</div>
+      <h4>Build Authority</h4>
+      <div class="period">Months 4–6</div>
       <ul>
-        <li>Case studies (anonymous or named)</li>
-        <li>Rohlik Group origin story page</li>
-        <li>Alternatives to Ocado Smart Platform</li>
+        <li>Case studies (named or anonymous)</li>
+        <li>"Alternatives to Ocado Smart Platform" page</li>
         <li>Annual eGrocery Automation Report</li>
-        <li>PR outreach to Grocery Dive, The Grocer, Supply Chain Dive</li>
-        <li>Partner links from AutoStore, Rohlik Group</li>
+        <li>PR to Grocery Dive, The Grocer, Supply Chain Dive</li>
+        <li>Partner links: AutoStore, Rohlik Group</li>
       </ul>
-      <p style="text-align:center;font-size:0.65em;color:var(--green);margin-top:12px;font-weight:700;">First earned backlinks, press mentions</p>
+      <p style="color:var(--green);font-size:0.68em;font-weight:700;margin-top:14px;">First earned backlinks + press mentions</p>
     </div>
   </div>
-  <div class="slide-footer">veloq.com — Confidential</div>
+  <div class="foot">veloq.com · Confidential</div>
 </section>
 
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 16: FIRST 6 CONTENT PIECES                -->
-<!-- ─────────────────────────────────────────────── -->
-<section data-background-color="#020817">
-  <h3>Phase 2 Content</h3>
-  <h2>The First 6 Articles to Publish</h2>
-  <div class="three-col">
-    <div class="card green">
-      <span class="card-tag">Article 1 — Publish First</span>
-      <h4>MFC vs CFC: A Grocery Operator's Guide</h4>
-      <p>High-volume research query. Nobody else is writing this from inside an operating eGrocer. Include real pick rates, deployment timelines, cost ranges.</p>
-    </div>
-    <div class="card green">
-      <span class="card-tag">Article 2</span>
-      <h4>What Does It Cost to Pick a Grocery Order?</h4>
-      <p>Benchmark data from real FCs. Rohlik Group data makes this immediately the most authoritative piece on this topic globally. High link-earning potential.</p>
-    </div>
-    <div class="card green">
-      <span class="card-tag">Article 3</span>
-      <h4>From Site Access to Go-Live in Under 8 Months</h4>
-      <p>Decision-stage content. Veloq's deployment speed is a genuine differentiator. Walk through what the 8-month process actually looks like.</p>
-    </div>
-    <div class="card">
-      <span class="card-tag">Article 4</span>
-      <h4>Why Most eGrocery Automation Projects Fail</h4>
-      <p>Thought leadership. Positions Veloq as a trusted advisor, not just a vendor. Targets CFO and COO-level readers who've seen bad ROI before.</p>
-    </div>
-    <div class="card">
-      <span class="card-tag">Article 5</span>
-      <h4>Side-of-Store vs Dark Store: Which Model?</h4>
-      <p>Decision-stage comparison directly relevant to Veloq's two core solution types. High intent, low competition.</p>
-    </div>
-    <div class="card">
-      <span class="card-tag">Article 6</span>
-      <h4>What >90 NPS in eGrocery Actually Looks Like</h4>
-      <p>CX-focused angle reaching ecommerce and operations directors. Veloq's >90 NPS claim becomes the authority hook.</p>
-    </div>
-  </div>
-  <div class="slide-footer">veloq.com — Confidential</div>
-</section>
-
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 17: SECTION DIVIDER                       -->
-<!-- ─────────────────────────────────────────────── -->
-<section class="slide-divider" data-background-color="#070e22">
-  <div class="section-num">05</div>
+<!-- ══════════════════════════════════════════════ -->
+<!-- 13 · DIVIDER: MEASUREMENT                      -->
+<!-- ══════════════════════════════════════════════ -->
+<section class="slide-divider" data-background-color="#07111f">
+  <span class="section-no">04</span>
   <h2>Measuring<br>Results</h2>
-  <p>A three-layer tracking stack covering traditional search, web analytics, and AI visibility.</p>
+  <p>A three-layer stack covering Google search, web analytics, and AI visibility.</p>
 </section>
 
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 18: MEASUREMENT STACK                     -->
-<!-- ─────────────────────────────────────────────── -->
+<!-- ══════════════════════════════════════════════ -->
+<!-- 14 · MEASUREMENT STACK                         -->
+<!-- ══════════════════════════════════════════════ -->
 <section data-background-color="#020817">
-  <h3>The Measurement Stack</h3>
+  <span class="eyebrow">The Measurement Stack</span>
   <h2>Tracking Across Three Channels</h2>
-  <div class="measure-stack">
+  <div class="measure-grid">
     <div class="measure-card gsc">
-      <div class="tool-name">Google Search Console</div>
+      <div class="tool">Google Search Console</div>
       <h4>Are we showing up in Google?</h4>
-      <div class="question">"Which queries are we appearing for, and at what position?"</div>
+      <div class="q">"Which queries are we appearing for, and at what position?"</div>
       <ul>
-        <li>Total impressions (early signal of indexing progress)</li>
+        <li>Impressions — early signal of indexing progress</li>
         <li>Non-branded vs branded click split</li>
-        <li>Position tracking for all Tier 1 + Tier 2 keywords</li>
-        <li>Indexed page count (target: 13 → 50+ in 6 months)</li>
-        <li>CTR by page as rankings improve</li>
+        <li>Position tracking for all target keywords</li>
+        <li>Indexed page count (target: 50+ in 6 months)</li>
       </ul>
     </div>
     <div class="measure-card ga">
-      <div class="tool-name">Google Analytics 4</div>
+      <div class="tool">Google Analytics 4</div>
       <h4>Who's coming and what are they doing?</h4>
-      <div class="question">"Is organic traffic growing, and is it the right traffic?"</div>
+      <div class="q">"Is organic traffic growing — and is it the right kind?"</div>
       <ul>
-        <li>Organic traffic share vs direct vs LinkedIn</li>
-        <li>Engagement rate per page (quality > volume)</li>
+        <li>Organic share vs direct vs LinkedIn</li>
+        <li>Engagement rate per page</li>
         <li>Top organic landing pages month-on-month</li>
-        <li>New vs returning users from organic</li>
-        <li>Contact form / demo request conversions by source</li>
+        <li>Demo request conversions by source</li>
       </ul>
     </div>
-    <div class="measure-card peekaboo">
-      <div class="tool-name">AI Peekaboo</div>
-      <h4>Do we show up when buyers ask AI?</h4>
-      <div class="question">"When a CPO asks ChatGPT about grocery automation, does Veloq appear?"</div>
+    <div class="measure-card pk">
+      <div class="tool">AI Peekaboo</div>
+      <h4>Do we appear when buyers ask AI?</h4>
+      <div class="q">"When a CPO asks ChatGPT about grocery automation, is Veloq in the answer?"</div>
       <ul>
         <li>"Best platforms for automated grocery fulfillment?"</li>
-        <li>"What are alternatives to Ocado Smart Platform?"</li>
+        <li>"Alternatives to Ocado Smart Platform?"</li>
         <li>"What is a WES for grocery?"</li>
-        <li>"How do I automate a grocery fulfillment center?"</li>
-        <li>"Who are the leading vendors in eGrocery automation?"</li>
+        <li>"Leading vendors in eGrocery automation?"</li>
       </ul>
     </div>
   </div>
-  <div class="slide-footer">veloq.com — Confidential</div>
+  <div class="foot">veloq.com · Confidential</div>
 </section>
 
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 19: KEY METRICS TO WATCH                  -->
-<!-- ─────────────────────────────────────────────── -->
+<!-- ══════════════════════════════════════════════ -->
+<!-- 15 · WHAT GOOD LOOKS LIKE                      -->
+<!-- ══════════════════════════════════════════════ -->
 <section data-background-color="#020817">
-  <h3>Success Metrics</h3>
-  <h2>What Good Looks Like at 3 and 6 Months</h2>
-  <div class="two-col">
+  <span class="eyebrow">Success Metrics</span>
+  <h2>What Good Looks Like</h2>
+  <div class="two-col" style="margin-top:20px;">
     <div>
-      <h4 style="color:var(--green);font-size:0.9em;margin-bottom:16px;">At 3 Months</h4>
+      <p style="font-size:0.72em;color:var(--green);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:14px;">At 3 Months</p>
       <div class="card" style="margin-bottom:12px;">
         <h4>📄 50+ indexed pages</h4>
-        <p>From 13 today. Each new page is a new entry point for search.</p>
+        <p>From 13 today. Each new page is a new entry point for search and AI citation.</p>
       </div>
       <div class="card" style="margin-bottom:12px;">
-        <h4>📈 Ranking for 5+ non-branded keywords</h4>
-        <p>Even positions 15–30 show Google recognises Veloq's relevance.</p>
+        <h4>📈 Ranking for 5+ non-branded queries</h4>
+        <p>Even positions 20–35 signal Google recognises Veloq's topical relevance.</p>
       </div>
       <div class="card">
         <h4>🤖 First AI mentions in Peekaboo</h4>
-        <p>Appearing in AI answers even once is a leading indicator of authority building.</p>
+        <p>Appearing in even one AI answer is a strong early indicator of authority building.</p>
       </div>
     </div>
     <div>
-      <h4 style="color:var(--green);font-size:0.9em;margin-bottom:16px;">At 6 Months</h4>
+      <p style="font-size:0.72em;color:var(--green);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:14px;">At 6 Months</p>
       <div class="card" style="margin-bottom:12px;">
-        <h4>🎯 20–30% of traffic is non-branded</h4>
-        <p>The key milestone. Means Veloq is being found by people who didn't already know the brand.</p>
+        <h4>🎯 20–30% non-branded traffic</h4>
+        <p>The key milestone. Veloq is being found by people who didn't already know the brand.</p>
       </div>
       <div class="card" style="margin-bottom:12px;">
         <h4>🔗 First earned backlinks from press</h4>
-        <p>Benchmark content and the annual report should generate Grocery Dive / Supply Chain Dive links.</p>
+        <p>Benchmark content and the annual report should generate Grocery Dive + Supply Chain Dive coverage.</p>
       </div>
       <div class="card">
         <h4>📊 Organic contributing to pipeline</h4>
-        <p>Even 1–2 demo requests from organic per month signals the channel is working at Veloq's deal size.</p>
+        <p>Even 1–2 demo requests/month from organic signals the channel is working at Veloq's deal size.</p>
       </div>
     </div>
   </div>
-  <div class="slide-footer">veloq.com — Confidential</div>
+  <div class="foot">veloq.com · Confidential</div>
 </section>
 
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 20: SECTION DIVIDER                       -->
-<!-- ─────────────────────────────────────────────── -->
-<section class="slide-divider" data-background-color="#070e22">
-  <div class="section-num">06</div>
-  <h2>Veloq's Unfair<br>Advantage</h2>
-  <p>What Veloq has that no competitor can replicate — and how to turn it into SEO fuel.</p>
-</section>
-
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 21: UNFAIR ADVANTAGE                      -->
-<!-- ─────────────────────────────────────────────── -->
+<!-- ══════════════════════════════════════════════ -->
+<!-- 16 · UNFAIR ADVANTAGE                          -->
+<!-- ══════════════════════════════════════════════ -->
 <section data-background-color="#020817">
-  <h3>The Differentiator</h3>
+  <span class="eyebrow">The Differentiator</span>
   <h2>What No Competitor Can Copy</h2>
-  <div class="advantage-grid">
-    <div class="adv-card">
-      <div class="adv-icon">🏭</div>
+  <div class="adv-grid">
+    <div class="adv">
+      <div class="icon">🏭</div>
       <h4>12 Live Fulfillment Centers</h4>
       <p>Real operational data. Real pick rates. Real cost per order. Competitors publish theory. Veloq can publish facts.</p>
     </div>
-    <div class="adv-card">
-      <div class="adv-icon">🌍</div>
+    <div class="adv">
+      <div class="icon">🌍</div>
       <h4>5 Markets, $1.7B+ Network</h4>
-      <p>Cross-market operational experience gives Veloq the ability to write comparative content no single-market vendor can.</p>
+      <p>Cross-market experience no single-market vendor can replicate. Enables comparative content with genuine authority.</p>
     </div>
-    <div class="adv-card">
-      <div class="adv-icon">⚡</div>
-      <h4>Go Live in &lt;8 Months</h4>
-      <p>A concrete, defensible deployment claim. OSP takes years. This is content that directly converts hesitant buyers.</p>
+    <div class="adv">
+      <div class="icon">⚡</div>
+      <h4>Go Live in Under 8 Months</h4>
+      <p>A concrete, defensible claim. OSP takes years. This directly converts buyers who have been burned by long deployments.</p>
     </div>
-    <div class="adv-card">
-      <div class="adv-icon">📈</div>
-      <h4>&gt;90 NPS, 99%+ Uptime</h4>
-      <p>Hard numbers that most competitors won't publish because they can't back them up. Build content around these KPIs.</p>
+    <div class="adv">
+      <div class="icon">📈</div>
+      <h4>>90 NPS · 99%+ Uptime</h4>
+      <p>Hard numbers most competitors won't publish because they can't back them up. Build dedicated content around each KPI.</p>
     </div>
-    <div class="adv-card">
-      <div class="adv-icon">🥬</div>
+    <div class="adv">
+      <div class="icon">🥬</div>
       <h4>Born from Rohlik Group</h4>
-      <p>Europe's fastest-growing eGrocer built this technology to solve their own problems. That backstory is a trust signal no technology-only company can claim.</p>
+      <p>Europe's fastest-growing eGrocer built this tech to solve their own problems. No technology-only vendor can claim that.</p>
     </div>
-    <div class="adv-card">
-      <div class="adv-icon">🤖</div>
+    <div class="adv">
+      <div class="icon">🤖</div>
       <h4>Already Thinking About AEO</h4>
-      <p>Veloq already has AI summary prompts on their homepage. As content builds, AI Peekaboo will track how that translates into real AI citations.</p>
+      <p>AI summary prompts are already on the homepage. As content grows, Peekaboo tracks whether AI models start citing it.</p>
     </div>
   </div>
-  <div class="slide-footer">veloq.com — Confidential</div>
+  <div class="foot">veloq.com · Confidential</div>
 </section>
 
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 22: PRIORITY ACTION PLAN                  -->
-<!-- ─────────────────────────────────────────────── -->
+<!-- ══════════════════════════════════════════════ -->
+<!-- 17 · PRIORITY ACTIONS                          -->
+<!-- ══════════════════════════════════════════════ -->
 <section data-background-color="#020817">
-  <h3>Priority Actions</h3>
+  <span class="eyebrow">Action Plan</span>
   <h2>What to Do First</h2>
-  <table class="priority-table">
-    <tr><th>Priority</th><th>Action</th><th>Keyword Target</th><th>Est. Timeline to Rank</th></tr>
-    <tr>
-      <td><span class="num-badge">1</span></td>
-      <td>Publish MFC vs CFC operator guide</td>
-      <td><span class="kw-code">micro fulfillment center vs central fulfillment center</span></td>
-      <td><span class="pill green">4–8 weeks</span></td>
-    </tr>
-    <tr>
-      <td><span class="num-badge">2</span></td>
-      <td>Create /solutions/egrocery-fulfillment-software/ page</td>
-      <td><span class="kw-code">eGrocery fulfillment software</span></td>
-      <td><span class="pill yellow">6–10 weeks</span></td>
-    </tr>
-    <tr>
-      <td><span class="num-badge">3</span></td>
-      <td>Create /software/warehouse-execution-system/ page</td>
-      <td><span class="kw-code">grocery warehouse execution system WES</span></td>
-      <td><span class="pill yellow">6–10 weeks</span></td>
-    </tr>
-    <tr>
-      <td><span class="num-badge">4</span></td>
-      <td>Publish grocery cost-per-order benchmark article</td>
-      <td><span class="kw-code">grocery fulfillment cost per order benchmark</span></td>
-      <td><span class="pill yellow">8–12 weeks</span></td>
-    </tr>
-    <tr>
-      <td><span class="num-badge">5</span></td>
-      <td>Build "Alternatives to Ocado Smart Platform" page</td>
-      <td><span class="kw-code">ocado smart platform alternatives</span></td>
-      <td><span class="pill green">6–8 weeks</span></td>
-    </tr>
-    <tr>
-      <td><span class="num-badge">6</span></td>
-      <td>Create /solutions/grocery-warehouse-automation/ page</td>
-      <td><span class="kw-code">grocery warehouse automation software</span></td>
-      <td><span class="pill yellow">8–12 weeks</span></td>
-    </tr>
-  </table>
-  <div class="slide-footer">veloq.com — Confidential</div>
+  <div class="priority-list">
+    <div class="p-row">
+      <div class="p-num">1</div>
+      <div>
+        <div class="p-action">Publish MFC vs CFC operator guide</div>
+        <div class="p-kw">micro fulfillment center vs central fulfillment center</div>
+      </div>
+      <div></div>
+      <div class="p-time"><span class="pill green">4–8 wks</span></div>
+    </div>
+    <div class="p-row">
+      <div class="p-num">2</div>
+      <div>
+        <div class="p-action">Create /solutions/egrocery-fulfillment-software/</div>
+        <div class="p-kw">eGrocery fulfillment software</div>
+      </div>
+      <div></div>
+      <div class="p-time"><span class="pill yellow">6–10 wks</span></div>
+    </div>
+    <div class="p-row">
+      <div class="p-num">3</div>
+      <div>
+        <div class="p-action">Build "Alternatives to Ocado Smart Platform" page</div>
+        <div class="p-kw">ocado smart platform alternatives</div>
+      </div>
+      <div></div>
+      <div class="p-time"><span class="pill green">6–8 wks</span></div>
+    </div>
+    <div class="p-row">
+      <div class="p-num">4</div>
+      <div>
+        <div class="p-action">Create /software/warehouse-execution-system/</div>
+        <div class="p-kw">grocery warehouse execution system WES</div>
+      </div>
+      <div></div>
+      <div class="p-time"><span class="pill yellow">6–10 wks</span></div>
+    </div>
+    <div class="p-row">
+      <div class="p-num">5</div>
+      <div>
+        <div class="p-action">Publish grocery cost-per-order benchmark article</div>
+        <div class="p-kw">grocery fulfillment cost per order benchmark</div>
+      </div>
+      <div></div>
+      <div class="p-time"><span class="pill yellow">8–12 wks</span></div>
+    </div>
+  </div>
+  <div class="foot">veloq.com · Confidential</div>
 </section>
 
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 23: NEXT STEPS                            -->
-<!-- ─────────────────────────────────────────────── -->
+<!-- ══════════════════════════════════════════════ -->
+<!-- 18 · NEXT STEPS                                -->
+<!-- ══════════════════════════════════════════════ -->
 <section data-background-color="#020817">
-  <h3>Proposed Engagement</h3>
+  <span class="eyebrow">Proposed Engagement</span>
   <h2>Next Steps</h2>
-  <div class="next-steps">
+  <div class="steps">
     <div class="step">
-      <div class="step-week">Week 1–2</div>
-      <div class="step-content">
+      <div class="step-badge">Week 1–2</div>
+      <div>
         <h4>Setup & Baseline</h4>
-        <p>Connect GSC + GA4. Set up AI Peekaboo tracking for 10 target prompts. Baseline report: current impressions, indexed pages, AI visibility score.</p>
+        <p>Connect GSC + GA4. Set up AI Peekaboo for 10 target prompts. Baseline report: current impressions, indexed pages, AI visibility score.</p>
       </div>
     </div>
     <div class="step">
-      <div class="step-week">Week 2–3</div>
-      <div class="step-content">
+      <div class="step-badge">Week 2–3</div>
+      <div>
         <h4>Site Structure Expansion</h4>
-        <p>Build and publish all missing solution and software pages. Take indexed page count from 13 to 25+. Immediate impact on crawl coverage.</p>
+        <p>Build all missing solution and software pages. Take indexed page count from 13 to 25+. Immediate crawl coverage impact.</p>
       </div>
     </div>
     <div class="step">
-      <div class="step-week">Week 3–4</div>
-      <div class="step-content">
+      <div class="step-badge">Week 3–4</div>
+      <div>
         <h4>First Content Published</h4>
-        <p>MFC vs CFC guide + grocery cost-per-order benchmark. Pitched to Grocery Dive and Supply Chain Dive for coverage. Two pieces that can earn links immediately.</p>
+        <p>MFC vs CFC guide + cost-per-order benchmark. Both pitched to Grocery Dive and Supply Chain Dive for earned coverage.</p>
       </div>
     </div>
     <div class="step">
-      <div class="step-week">Ongoing</div>
-      <div class="step-content">
+      <div class="step-badge">Ongoing</div>
+      <div>
         <h4>Monthly Reporting + 2 Articles / Month</h4>
-        <p>GSC / GA4 / AI Peekaboo report delivered monthly. Consistent content cadence. Strategy adjusted based on what's gaining traction.</p>
+        <p>GSC / GA4 / AI Peekaboo report monthly. Consistent content cadence. Strategy adjusted based on traction.</p>
       </div>
     </div>
   </div>
-  <div class="highlight-box">
-    <p>Proposed engagement: <strong>€2,000–2,500/month</strong> for SEO consulting, content strategy, and monthly reporting. Speed is the priority — execution begins in week one.</p>
+  <div class="highlight" style="margin-top:14px;">
+    <p>Proposed engagement: <strong>€2,000–2,500/month</strong> for SEO consulting, content strategy, and monthly reporting. Speed is the priority — execution starts week one.</p>
   </div>
-  <div class="slide-footer">veloq.com — Confidential</div>
+  <div class="foot">veloq.com · Confidential</div>
 </section>
 
-<!-- ─────────────────────────────────────────────── -->
-<!-- SLIDE 24: CLOSING                               -->
-<!-- ─────────────────────────────────────────────── -->
+<!-- ══════════════════════════════════════════════ -->
+<!-- 19 · CLOSE                                     -->
+<!-- ══════════════════════════════════════════════ -->
 <section class="slide-close" data-background-color="#020817">
-  <h3>The Bottom Line</h3>
+  <span class="eyebrow">The Bottom Line</span>
   <h2>Veloq is the most operationally credible company in this space.<br><span style="color:var(--green)">It just needs to be visible.</span></h2>
-  <p style="color:var(--muted);max-width:600px;margin-top:20px;font-size:0.85em;">No other vendor in grocery automation has run 12 fulfillment centers across 5 markets and $1.7B+ in revenue. That operational DNA is the SEO strategy — we just need to get it online.</p>
-  <div class="two-col" style="margin-top:36px;">
-    <div class="card green">
-      <h4 style="font-size:1em;">Filipe Lins Duarte</h4>
+  <p style="color:var(--muted);max-width:580px;margin-top:18px;font-size:0.88em;line-height:1.7;">No other vendor in grocery automation has run 12 fulfillment centers across 5 markets and $1.7B+ in revenue. That operational DNA is the entire SEO strategy — we just need to get it online.</p>
+  <div class="two-col" style="margin-top:32px;">
+    <div class="card accent">
+      <h4>Filipe Lins Duarte</h4>
       <p>SEO & AEO Consultant</p>
       <p style="margin-top:8px;color:var(--green);">team@aipeekaboo.com</p>
     </div>
     <div class="card">
       <h4>Powered by AI Peekaboo</h4>
-      <p>Track Veloq's visibility across Google, Bing, ChatGPT, Claude, and Perplexity — all in one place.</p>
-      <p style="margin-top:8px;"><a href="https://aipeekaboo.com" style="color:var(--green);">aipeekaboo.com</a></p>
+      <p>Track Veloq across Google, ChatGPT, Claude, and Perplexity — all in one place.</p>
+      <p style="margin-top:8px;"><a href="https://aipeekaboo.com">aipeekaboo.com</a></p>
     </div>
   </div>
-  <div class="slide-footer">veloq.com — Confidential</div>
+  <div class="foot">veloq.com · Confidential</div>
 </section>
 
 </div>
@@ -857,12 +868,11 @@
     transition: 'fade',
     transitionSpeed: 'fast',
     backgroundTransition: 'fade',
-    width: 1200,
-    height: 700,
-    margin: 0.04,
+    width: 1280,
+    height: 720,
+    margin: 0.05,
     minScale: 0.2,
     maxScale: 2.0,
-    plugins: []
   });
 </script>
 </body>
